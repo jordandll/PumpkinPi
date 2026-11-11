@@ -1,0 +1,6 @@
+/TODO.md
+dist/
+build/
+*.egg-info/
+/__pycache__/
+.idea/

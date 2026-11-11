@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pumpkinpi"
+version = "0.2.1"
+description = "Installable CLI for the RemoteRPi PumpkinPi scripts, which allow users to control and monitor the PumpkinPi board from another device, typically a phone."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Jordan Driscoll", email = "drisjor@proton.me" }]
+license = { text = "MIT" }
+dependencies = [
+    "gpiozero>=2.0",
+]
+
+[project.scripts]
+pumpkinpi = "pumpkinpi.cli:main"
+
+[tool.setuptools]
+packages = ["pumpkinpi"]
