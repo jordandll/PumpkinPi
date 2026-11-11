@@ -17,5 +17,8 @@ dependencies = [
 [project.scripts]
 pumpkinpi = "pumpkinpi.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/jordandll/RemoteRPi"
+
 [tool.setuptools]
 packages = ["pumpkinpi"]
