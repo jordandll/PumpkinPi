@@ -9,12 +9,13 @@ if '--help' in argv:
         'Start the PumpkinPi command server.\n'
         '\n'
         'Options:\n'
-        '  --host HOST, -h HOST  Address to bind to (default: 127.0.0.1)\n'
-        '  --port PORT, -p PORT  Port to listen on (default: 9001)\n'
+        '  --host HOST, -h HOST  Address to bind to (default: config file or 127.0.0.1)\n'
+        '  --port PORT, -p PORT  Port to listen on (default: config file or 9001)\n'
         '  --help                Show this help message and exit'
     )
     sys.exit(0)
 
+from pumpkinpi.config import resolve_network_options
 from gpiozero import PumpkinPi
 from gpiozero.pins.mock import MockFactory
 import socket as sock
@@ -68,20 +69,8 @@ def parse_commands(message):
     return parsed
 
 
-# Parse the command line for address info.
-if '-h' in argv:
-    HOST = argv[argv.index('-h') + 1]
-elif '--host' in argv:
-    HOST = argv[argv.index('--host') + 1]
-else:
-    HOST = '127.0.0.1'
-
-if '-p' in argv:
-    PORT = int(argv[argv.index('-p') + 1])
-elif '--port' in argv:
-    PORT = int(argv[argv.index('--port') + 1])
-else:
-    PORT = 9001
+# Resolve command-line options first, then use config-file defaults.
+HOST, PORT = resolve_network_options(argv[1:])
 
 ADDR = (HOST, PORT)
 

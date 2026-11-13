@@ -1,11 +1,7 @@
-Use the following prompt to update the phone app according to the changes made on the server end.
+Make the app configurable so that default values for the `--host` and `--port` parameters can be stored in a config file.
 
---- Begin Prompt ---
+On Linux systems, the config file should be stored in `~/.local/etc/pumpkinpi_config.d` -- if you have a better suggestion, let me know -- with instructions on how to set the configurable parameters.  On other systems, I'll let you decide where and how to store the config values.
 
-The server this phone app talks to has been updated so that it accords with a protocol that allows for a list of commands to be sent in one network request; If the server recieves more than one command in a request, it parses and then executes them in sequencial order.  Moreover, it now can now process requests even while it is executing commands from a previous one.  The server continues accepting `monitor` requests while a command batch is running.
-Other command batches received during execution are queued in order, and their clients
-receive a warning that the server is busy.  That warning message is: 'WARNING: Server is busy; commands have been queued.'.
+The values set in this file must apply to any `pumpkinpi` command with these parameters -- e.g. `server`, `client`, etc. -- so the implementing scripts should parse said file in the absense of command line arguments for the relevant parameters.
 
-Can you update this phone app so that it may notify the user if it recieves such a warning?
-
---- End Prompt ---
+Arguments passed to `pumpkinpi` commands on the command line must take precedence over values set in the config file.

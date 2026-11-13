@@ -12,8 +12,8 @@ if '--help' in argv:
         'Send one or more commands to the PumpkinPi server.\n'
         '\n'
         'Options:\n'
-        '  --host HOST, -h HOST  Server address (default: 127.0.0.1)\n'
-        '  --port PORT, -p PORT  Server port (default: 9001)\n'
+        '  --host HOST, -h HOST  Server address (default: config file or 127.0.0.1)\n'
+        '  --port PORT, -p PORT  Server port (default: config file or 9001)\n'
         '  --help                Show this help message and exit\n'
         '\n'
         'Commands include blink, cycle, monitor, sides.left.0, sides.right.4,\n'
@@ -23,6 +23,7 @@ if '--help' in argv:
     sys.exit(0)
 
 import socket as sock
+from pumpkinpi.config import resolve_network_options
 
 sock.setdefaulttimeout(2)
 
@@ -32,20 +33,8 @@ err_msg_timeout = 'Connection Error:\tConnection timeout error occurred with ser
 # Create client socket, denoted as 's'.
 s = sock.socket()
 
-# Parse the command line for address info.
-if '-h' in argv:
-    HOST = argv[argv.index('-h') + 1]
-elif '--host' in argv:
-    HOST = argv[argv.index('--host') + 1]
-else:
-    HOST = '127.0.0.1'
-
-if '-p' in argv:
-    PORT = int(argv[argv.index('-p') + 1])
-elif '--port' in argv:
-    PORT = int(argv[argv.index('--port') + 1])
-else:
-    PORT = 9001
+# Resolve command-line options first, then use config-file defaults.
+HOST, PORT = resolve_network_options(argv[1:])
 
 ADDR = (HOST, PORT)
 
@@ -55,6 +44,8 @@ i = 1
 while i < len(argv):
     if argv[i] in ('-h', '--host', '-p', '--port'):
         i += 2
+    elif argv[i].startswith('--host=') or argv[i].startswith('--port='):
+        i += 1
     else:
         command_args.append(argv[i])
         i += 1

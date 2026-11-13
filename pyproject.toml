@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pumpkinpi"
-version = "0.2.1"
+version = "0.3.0"
 description = "Installable CLI for the RemoteRPi PumpkinPi scripts, which allow users to control and monitor the PumpkinPi board from another device, typically a phone."
 readme = "README.md"
 requires-python = ">=3.8"

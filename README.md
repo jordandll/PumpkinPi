@@ -7,11 +7,11 @@ PumpkinPi is a small Python package for controlling a PumpkinPi GPIO board and i
 This package contains the following modules:
 
 - `server.py` — listens for client commands and toggles the PumpkinPi outputs.
-- `pumpkinpi` — sends a command string to the server over a socket.
-- `pumpkinpi` — runs a short cycle animation across the PumpkinPi sides and eyes.
+- `client.py` — sends a command string to the server over a socket.
+- `cycle.py` — runs a short cycle animation across the PumpkinPi sides and eyes.
 - `pumpkinpi` — exposes package scripts as CLI subcommands.
 - `pumpkinpi` — package entry point for running the CLI.
-- `pumpkinpi` — motion-sensor-related logic for GPIO interaction.
+- `motion-sensor.py` — motion-sensor-related logic for GPIO interaction.
 
 ## Installation
 
@@ -40,6 +40,32 @@ pumpkinpi cycle
 ```
 
 The CLI runs the matching script with Python automatically, so each file acts like a command.
+
+## Network defaults
+
+The `server` and `client` commands read default network settings from an INI
+configuration file. On Linux, the preferred location is
+`~/.config/pumpkinpi/config.ini` (or `$XDG_CONFIG_HOME/pumpkinpi/config.ini`
+when `XDG_CONFIG_HOME` is set). The suggested legacy location
+`~/.local/etc/pumpkinpi_config.d` is also supported; it can be either a config
+file or a directory containing `config.ini`. On macOS, the default is
+`~/Library/Application Support/pumpkinpi/config.ini`; on Windows, it is
+`%APPDATA%\pumpkinpi\config.ini`.
+
+Create the config file with a `[network]` section and set either or both values:
+
+```ini
+[network]
+host = 192.168.1.20
+port = 9001
+```
+
+These settings are used by both `pumpkinpi server` and `pumpkinpi client` when
+their corresponding options are omitted. Command-line options take precedence:
+
+```bash
+pumpkinpi client --host 127.0.0.1 --port 9002 blink
+```
 
 ## Example server/client flow
 
